@@ -3,6 +3,7 @@ import React from 'react'
 import Image from 'next/image'
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useRouter } from 'next/navigation';
+import { getDiscountedPrice } from './commonFunctions';
 
 type Review = {
   rating: number
@@ -36,9 +37,6 @@ const ProductCard = ({
   // reviews,
 }: Props) => {
 
-  const getDiscountedPrice = (price: number, discount: number) => {
-    return (price - price * (discount / 100)).toFixed(2)
-  }
   const handleWishIcon = (e: React.MouseEvent<SVGElement>) => {
   const target = e.currentTarget;
   target.style.color = target.style.color === 'red' ? 'black' : 'red';
