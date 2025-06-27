@@ -87,12 +87,14 @@ const ProductDisplay = ({ prodDis }: Props) => {
             {prodDis?.description}
           </Typography>
 
-          <Button
+              {prodDis?.availabilityStatus === 'In Stock' && <Button
             fullWidth
             sx={{ backgroundColor: 'black', color: 'white', mt: 2, '&:hover': { backgroundColor: '#222' } }}
           >
             Add to Cart
-          </Button>
+          </Button>}
+
+          
         </Box>
       </Stack>
     </Box>

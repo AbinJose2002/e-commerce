@@ -1,4 +1,5 @@
 'use client'
+import ProductDetails from '@/shared_features/product_page/ProductDetails'
 import ProductDisplay from '@/shared_features/product_page/ProductDisplay'
 import { Box } from '@mui/material'
 import axios from 'axios'
@@ -13,20 +14,52 @@ export type ProductDisplayType = {
     discountPercentage?: number
     thumbnail?: string
     images?: string[]
+    availabilityStatus: string
 }
+
+export type ReviewType = {
+  rating: number
+  comment: string
+  date: string
+  reviewerName: string
+  reviewerEmail: string
+}
+
+export type ProductDetailsType = {
+  title: string
+  description: string
+  category: string
+  rating: number
+  tags: string[]
+  brand: string
+  sku: string
+  weight: number
+  dimensions: {
+    width: number
+    height: number
+    depth: number
+  }
+  warrantyInformation: string
+  shippingInformation: string
+  availabilityStatus: string
+  reviews: ReviewType[]
+  returnPolicy: string
+}
+
 
 const Page = () => {
     const searchParams = useSearchParams()
     const itemId = searchParams.get('product')
-    const [product, setProduct] = useState<object>()
     const [productDisplay, setProductDisplay] = useState<ProductDisplayType>()
+    const [productDetails, setProductDetails] = useState<ProductDetailsType>()
 
     useEffect(()=>{
         const fetchProduct = async () => {
             try {
                 const res = await axios.get(`https://dummyjson.com/products/${itemId}`)
-                setProduct(res.data)
+                console.log(res.data)
                 setProductDisplay(res.data)
+                setProductDetails(res.data)
             } catch (error) {
                 console.log(error)
             }
@@ -36,7 +69,12 @@ const Page = () => {
 
   return (
     <Box p={4}>
-        <ProductDisplay prodDis={productDisplay}/>
+        { productDetails && productDisplay && 
+            <Box>
+                <ProductDisplay prodDis={productDisplay}/>
+        <ProductDetails prodDet={productDetails}/>
+            </Box>
+        }
     </Box>
   )
 }
