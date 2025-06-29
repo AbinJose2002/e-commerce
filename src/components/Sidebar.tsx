@@ -18,7 +18,7 @@ const Sidebar = () => {
         <AccordianWrapper />
 
         <Button
-          variant={"p+rimary"}
+          variant={"black"}
           fullWidth
           sx={{ mt: 3, borderRadius: '20px', textTransform: 'none', fontWeight: 'bold' }}
         >
