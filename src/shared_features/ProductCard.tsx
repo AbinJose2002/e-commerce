@@ -5,14 +5,6 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useRouter } from 'next/navigation';
 import { getDiscountedPrice } from './commonFunctions';
 
-type Review = {
-  rating: number
-  comment: string
-  date: string
-  reviewerName: string
-  reviewerEmail: string
-}
-
 type Props = {
     id?: number
     category?: string
@@ -22,7 +14,6 @@ type Props = {
     price: number
     discountPercentage: number
     rating: number,
-    reviews: Review[]
 }
 
 const ProductCard = ({

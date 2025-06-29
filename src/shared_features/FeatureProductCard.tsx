@@ -3,8 +3,8 @@
 import { Box, Stack, Typography } from '@mui/material'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import ProductCard from './ProductCard'
 import SkeletonCard from './SkeletonCard'
+import ProductCard from './ProductCard'
 
 export type Product = {
   id: number;
@@ -15,7 +15,6 @@ export type Product = {
   price: number;
   discountPercentage: number;
   rating: number;
-  reviews?: object[];
 };
 
 type Props = {
@@ -66,7 +65,6 @@ const FeatureProductCard = ({ head, type }: Props) => {
     price={item.price}
     discountPercentage={item.discountPercentage}
     rating={item.rating}
-    reviews={item.reviews ?? []}
   />
 </Box>
 
