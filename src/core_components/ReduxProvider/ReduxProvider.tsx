@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react';
 import Navbar from '../Navbar/Navbar';
-import store from '@/store/store';
+import store, { AppDispatch } from '@/store/store';
 import { Provider, useDispatch } from 'react-redux';
 import { createTheme, ThemeProvider } from "@mui/material";
 import Footer from '../Footer/Footer';
@@ -28,7 +28,7 @@ const theme = createTheme({
     MuiButton: {
       variants: [
         {
-          props: { variant: 'black' }, 
+          props: { variant: 'contained' }, 
           style: {
             backgroundColor: 'black',
             color: 'white',
@@ -44,14 +44,14 @@ const theme = createTheme({
 
 // Separate component to use Redux hooks inside <Provider>
 const InitAuthChecker = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     dispatch(checkAuthFromCookie());
   }, [dispatch]);
 
   return null;
-};
+};;
 
 const ReduxProvider = ({ children }: Props) => {
   return (
