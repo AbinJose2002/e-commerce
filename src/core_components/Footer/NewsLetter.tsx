@@ -12,7 +12,7 @@ const NewsLetter = () => {
         <Stack spacing={2} alignItems="center" direction={{xs: 'column', md: 'row'}}>
           <Typography variant="h3">STAY UPTO DATE ABOUT OUR LATEST OFFERS</Typography>
           <Stack direction={'column'} spacing={2}>
-            <TextInput  label="Enter your email" width icon={<MailIcon />}  />
+            <TextInput  label="Enter your email" icon={<MailIcon />}  />
             <Button variant="contained" sx={{backgroundColor: 'white', color: 'black'}}>Subscribe</Button>
           </Stack>
         </Stack>
