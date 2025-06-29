@@ -18,7 +18,7 @@ const Sidebar = () => {
         <AccordianWrapper />
 
         <Button
-          variant={"black"}
+          variant={"contained"}
           fullWidth
           sx={{ mt: 3, borderRadius: '20px', textTransform: 'none', fontWeight: 'bold' }}
         >
