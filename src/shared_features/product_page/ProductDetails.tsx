@@ -9,6 +9,7 @@ import {
   Typography,
   Stack,
   Divider,
+  Grid,
 } from '@mui/material'
 import React, { useState } from 'react'
 
@@ -85,22 +86,47 @@ const ProductDetails = ({prodDet}: Props ) => {
         {prodDet.reviews.length === 0 ? (
           <Typography>No reviews yet.</Typography>
         ) : (
-          <Stack spacing={2}>
-            {prodDet.reviews.map((review, idx) => (
-              <Box key={idx}>
-                <Stack direction="row" alignItems="center" spacing={1}>
-                  <Rating value={review.rating} readOnly size="small" />
-                  <Typography variant="body2" fontWeight="bold">
-                    {review.reviewerName}
-                  </Typography>
-                </Stack>
-                <Typography variant="body2" color="text.secondary">
-                  {new Date(review.date).toLocaleDateString()}
-                </Typography>
-                <Typography variant="body1">{review.comment}</Typography>
-                <Divider sx={{ my: 1 }} />
-              </Box>
-            ))}
+            <Stack>
+              <Typography>Reviews ({prodDet.reviews.length})</Typography>
+            <Grid container spacing={2}>
+  {prodDet.reviews.map((review, idx) => (
+    <Grid size={{xs: 12, sm: 6, md: 4}} key={idx}>
+      <Box
+        p={2}
+        borderRadius={2}
+        border="1px solid #ccc"
+        boxShadow={1}
+        sx={{ backgroundColor: '#fff' }}
+      >
+        <Stack spacing={1}>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <Rating value={review.rating} readOnly size="small" />
+            <Typography variant="body2" fontWeight="bold">
+              {review.reviewerName}
+            </Typography>
+            <Typography variant="body2" color="success.main">
+              ✔
+            </Typography>
+          </Stack>
+
+          <Typography variant="body2" color="text.secondary">
+            {new Date(review.date).toLocaleDateString(undefined, {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })}
+          </Typography>
+
+          <Typography variant="body1" sx={{ fontStyle: 'italic' }}>
+            “{review.comment}”
+          </Typography>
+
+          <Divider sx={{ mt: 1 }} />
+        </Stack>
+      </Box>
+    </Grid>
+  ))}
+</Grid>
           </Stack>
         )}
       </TabPanel>

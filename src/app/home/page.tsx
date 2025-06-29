@@ -1,4 +1,3 @@
-import ProductCard from '@/shared_features/ProductCard'
 import React from 'react'
 
 const pages = () => {

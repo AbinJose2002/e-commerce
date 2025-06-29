@@ -1,16 +1,18 @@
 'use client'
 
-import React from 'react'
-import Navbar from '../Navbar/Navbar'
-import store from '@/store/store'
-import { Provider } from 'react-redux'
+import React, { useEffect } from 'react';
+import Navbar from '../Navbar/Navbar';
+import store from '@/store/store';
+import { Provider, useDispatch } from 'react-redux';
+import { createTheme, ThemeProvider } from "@mui/material";
+import Footer from '../Footer/Footer';
+import TopBar from '../TopBar/TopBar';
+import NewsLetter from '../Footer/NewsLetter';
+import { checkAuthFromCookie } from '@/store/AuthSlice';
+
 type Props = {
-    children: React.ReactNode
-}
-import { colors, createTheme, ThemeProvider } from "@mui/material";
-import Footer from '../Footer/Footer'
-import TopBar from '../TopBar/TopBar'
-import NewsLetter from '../Footer/NewsLetter'
+    children: React.ReactNode;
+};
 
 const theme = createTheme({
   typography: {
@@ -18,8 +20,8 @@ const theme = createTheme({
   },
   palette: {
     primary: {
-      main: '#000000', // Black as the primary color
-      contrastText: '#ffffff', // White text on primary
+      main: '#000000',
+      contrastText: '#ffffff',
     },
   },
   components: {
@@ -31,7 +33,7 @@ const theme = createTheme({
             backgroundColor: 'black',
             color: 'white',
             '&:hover': {
-              backgroundColor: '#333', 
+              backgroundColor: '#333',
             },
           },
         },
@@ -39,19 +41,31 @@ const theme = createTheme({
     },
   },
 });
-const ReduxProvider = ({children} : Props) => {
 
+// Separate component to use Redux hooks inside <Provider>
+const InitAuthChecker = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(checkAuthFromCookie());
+  }, [dispatch]);
+
+  return null;
+};
+
+const ReduxProvider = ({ children }: Props) => {
   return (
     <Provider store={store}>
-        <ThemeProvider theme={theme}>
-            <TopBar />
-            <Navbar />
-            {children}
-            <NewsLetter />
-            <Footer />
-        </ThemeProvider>
+      <ThemeProvider theme={theme}>
+        <InitAuthChecker />
+        <TopBar />
+        <Navbar />
+        {children}
+        <NewsLetter />
+        <Footer />
+      </ThemeProvider>
     </Provider>
-  )
-}
+  );
+};
 
-export default ReduxProvider
+export default ReduxProvider;
