@@ -34,7 +34,8 @@ const FeatureProductCard = ({ head, type }: Props) => {
         const res = await axios.get(`https://dummyjson.com/products?limit=4${skipParam}`);
         setProducts(res.data.products);
         setLoading(true)
-      } catch (_error) {
+      } catch (error) {
+        console.log(error)
       }
     };
 
@@ -56,7 +57,8 @@ const FeatureProductCard = ({ head, type }: Props) => {
         {loading ? products.map((item, index) => (
           <Box key={index} sx={{ mt: { xs: 8, md: 0 } }}>
   <ProductCard
-    id={item.id}
+    id={item.id
+    }
     category={item.category}
     brand={item.brand}
     thumbnail={item.thumbnail}
