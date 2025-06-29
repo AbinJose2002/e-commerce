@@ -74,7 +74,6 @@ const Shop = () => {
                   price={item.price}
                   discountPercentage={item.discountPercentage}
                   rating={item.rating}
-                  reviews={item.reviews ?? []}
                 />
               </Box>
             ))}
