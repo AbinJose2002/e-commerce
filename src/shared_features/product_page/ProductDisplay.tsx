@@ -5,6 +5,10 @@ import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { ProductDisplayType } from '@/app/item/page'
 import { getDiscountedPrice } from '../commonFunctions'
+import { useDispatch } from 'react-redux'
+import { AppDispatch } from '@/store/store'
+import { addToCart } from '@/store/cartslice'
+import { useRouter } from 'next/navigation'
 
 type Props = {
   prodDis?: ProductDisplayType
@@ -12,6 +16,31 @@ type Props = {
 
 const ProductDisplay = ({ prodDis }: Props) => {
   const [selectedImage, setSelectedImage] = useState<string | undefined>()
+
+  const dispatch = useDispatch<AppDispatch>();
+
+const handleAddToCart = () => {
+  if (!prodDis) return;
+
+  dispatch(
+    addToCart({
+      itemId: prodDis.id as number,
+      title: prodDis.title || '',
+      price: prodDis.price || 0,
+      thumbnail: prodDis.thumbnail || '',
+      count: 1,
+      discountPercentage: prodDis.discountPercentage || ''
+    })
+  );
+}
+
+const router = useRouter()
+
+const handleBuyNow = (id: number) => {
+  handleAddToCart()
+  router.push(`/checkout?id=${id}`)
+}
+
 
   useEffect(() => {
     setSelectedImage(prodDis?.thumbnail)
@@ -56,7 +85,6 @@ const ProductDisplay = ({ prodDis }: Props) => {
           </Stack>
         </Box>
 
-        {/* Product Details */}
         <Box width={{ xs: 1, md: 0.5 }}>
           <Typography variant="h2" gutterBottom>
             {prodDis?.title}
@@ -86,15 +114,30 @@ const ProductDisplay = ({ prodDis }: Props) => {
           <Typography variant="subtitle1" gutterBottom>
             {prodDis?.description}
           </Typography>
-
-              {prodDis?.availabilityStatus === 'In Stock' && <Button
-            fullWidth
-            sx={{ backgroundColor: 'black', color: 'white', mt: 2, '&:hover': { backgroundColor: '#222' } }}
-          >
-            Add to Cart
-          </Button>}
-
-          
+            <Stack direction={'row'} spacing={2}>
+              {prodDis?.availabilityStatus === 'In Stock' && (
+                  <Button
+                    fullWidth
+                    onClick={handleAddToCart}
+                    sx={{
+                      backgroundColor: 'grey',
+                      color: 'white',
+                      mt: 2,
+                      '&:hover': { backgroundColor: '#222' },
+                    }}
+                  >
+                    Add to Cart
+                  </Button>
+                )}
+                <Button onClick={()=>handleBuyNow(prodDis?.id as number)}
+                sx={{
+                      backgroundColor: 'black',
+                      color: 'white',
+                      mt: 2,
+                      '&:hover': { backgroundColor: '#222' },
+                    }}
+                    fullWidth variant='contained'>Buy Now</Button>
+            </Stack>          
         </Box>
       </Stack>
     </Box>

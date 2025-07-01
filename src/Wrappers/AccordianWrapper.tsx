@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import {
   Accordion,
@@ -15,27 +15,36 @@ import {
   Slider,
   Stack,
   Typography,
-} from '@mui/material'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import React, { useState } from 'react'
-import { useSearchParams } from 'next/navigation'
-import { categoryFilters } from '../shared_features/categoryFilters' // Adjust path as needed
+  Button,
+} from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import React, { useState } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
+import { categoryFilters } from '../shared_features/categoryFilters'; // Adjust path as needed
 
 const AccordianWrapper = () => {
-  const [price, setPrice] = useState<number[]>([50, 200])
+  const [price, setPrice] = useState<number[]>([0, 100000]);
+  const [selectedRating, setSelectedRating] = useState<string>('');
+  const searchParams = useSearchParams();
+  const category = searchParams.get('category') || '';
+  const router = useRouter();
 
-  const searchParams = useSearchParams()
-  const category = searchParams.get('category') || ''
+  const dynamicFilters = categoryFilters[category] || {};
 
-  const dynamicFilters = categoryFilters[category] || {}
+  const handleRatingChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedRating(event.target.value);
+  };
 
-  const [selectedRating, setSelectedRating] = useState<string>('')
+  const handleApplyFilters = () => {
+    const params = new URLSearchParams(searchParams.toString());
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedRating(event.target.value)
-    console.log(`Selected rating: ${event.target.value} and above`)
-  }
+    // Set rating and price
+    if (selectedRating) params.set('rating', selectedRating);
+    params.set('minPrice', price[0].toString());
+    params.set('maxPrice', price[1].toString());
 
+    router.push(`?${params.toString()}`);
+  };
 
   return (
     <Box>
@@ -45,19 +54,19 @@ const AccordianWrapper = () => {
         </AccordionSummary>
         <AccordionDetails>
           <List>
-            <RadioGroup value={selectedRating} onChange={handleChange}>
-      {[0, 1, 2, 3].map((item) => (
-        <ListItemButton key={item}>
-          <ListItemIcon>
-            <FormControlLabel
-              value={(4 - item).toString()}
-              control={<Radio />}
-              label={`${4 - item} and above`}
-            />
-          </ListItemIcon>
-        </ListItemButton>
-      ))}
-    </RadioGroup>
+            <RadioGroup value={selectedRating} onChange={handleRatingChange}>
+              {[0, 1, 2, 3].map((item) => (
+                <ListItemButton key={item}>
+                  <ListItemIcon>
+                    <FormControlLabel
+                      value={(4 - item).toString()}
+                      control={<Radio />}
+                      label={`${4 - item} and above`}
+                    />
+                  </ListItemIcon>
+                </ListItemButton>
+              ))}
+            </RadioGroup>
           </List>
         </AccordionDetails>
       </Accordion>
@@ -71,8 +80,7 @@ const AccordianWrapper = () => {
             value={price}
             onChange={(_, newValue) => setPrice(newValue as number[])}
             valueLabelDisplay="auto"
-            min={0}
-            max={500}
+            min={10} step={200} max={100000}
           />
           <Stack direction="row" justifyContent="space-between">
             <Typography variant="caption">₹{price[0]}</Typography>
@@ -101,8 +109,18 @@ const AccordianWrapper = () => {
           </AccordionDetails>
         </Accordion>
       ))}
-    </Box>
-  )
-}
 
-export default AccordianWrapper
+      <Button
+        variant={"contained"}
+          fullWidth
+          sx={{ mt: 3, borderRadius: '20px', textTransform: 'none', fontWeight: 'bold' }}
+        color="primary"
+        onClick={handleApplyFilters}
+      >
+        Apply Filters
+      </Button>
+    </Box>
+  );
+};
+
+export default AccordianWrapper;
