@@ -29,7 +29,7 @@ const handleAddToCart = () => {
       price: prodDis.price || 0,
       thumbnail: prodDis.thumbnail || '',
       count: 1,
-      discountPercentage: prodDis.discountPercentage || ''
+      discountPercentage: prodDis.discountPercentage || 0
     })
   );
 }
