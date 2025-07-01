@@ -6,6 +6,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signInWithPopup,
+  signOut as firebaseSignOut,
   updateProfile
 } from "firebase/auth";
 
@@ -28,7 +29,64 @@ const initialState: initialStateType = {
   user: null,
 };
 
-// Async thunk to check auth from cookie
+const authSlice = createSlice({
+  name: "auth",
+  initialState,
+  reducers: {
+    signOut: (state) => {
+      console.log('sign out 2')
+        state.isLogged = false;
+        state.user = null;
+        Cookies.remove("authToken");
+        Cookies.remove("authName");
+        Cookies.remove("authImage");
+        Cookies.remove("authNumber");
+      },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(asyncLogin.fulfilled, (state, action: PayloadAction<UserData>) => {
+        state.isLogged = true;
+        state.user = action.payload;
+        if (action.payload.token) {
+          Cookies.set("authToken", action.payload.token, { expires: 7 });
+          Cookies.set("authName", action.payload.name || "", { expires: 7 });
+          Cookies.set("authImage", action.payload.photo || "", { expires: 7 });
+          Cookies.set("authNumber", action.payload.number || "", { expires: 7 });
+        }
+      })
+      .addCase(asyncRegister.fulfilled, (state, action: PayloadAction<UserData>) => {
+        state.isLogged = true;
+        state.user = action.payload;
+        if (action.payload.token) {
+          Cookies.set("authToken", action.payload.token, { expires: 7 });
+          Cookies.set("authName", action.payload.name || "", { expires: 7 });
+          Cookies.set("authImage", action.payload.photo || "", { expires: 7 });
+          Cookies.set("authNumber", action.payload.number || "", { expires: 7 });
+        }
+      })
+      .addCase(googleLogin.fulfilled, (state, action: PayloadAction<UserData>) => {
+        state.isLogged = true;
+        state.user = action.payload;
+        if (action.payload.token) {
+          Cookies.set("authToken", action.payload.token, { expires: 7 });
+          Cookies.set("authName", action.payload.name || "", { expires: 7 });
+          Cookies.set("authImage", action.payload.photo || "", { expires: 7 });
+          Cookies.set("authNumber", action.payload.number || "", { expires: 7 });
+        }
+      })
+      .addCase(checkAuthFromCookie.fulfilled, (state, action: PayloadAction<UserData | null>) => {
+        if (action.payload?.token) {
+          state.isLogged = true;
+          state.user = action.payload;
+        } else {
+          state.isLogged = false;
+          state.user = null;
+        }
+      })
+  },
+});
+
 export const checkAuthFromCookie = createAsyncThunk<UserData | null>(
   "auth/checkAuthFromCookie",
   async (_, { rejectWithValue }) => {
@@ -125,52 +183,16 @@ export const googleLogin = createAsyncThunk<UserData>(
   }
 );
 
-const authSlice = createSlice({
-  name: "auth",
-  initialState,
-  reducers: {},
-  extraReducers: (builder) => {
-    builder
-      .addCase(asyncLogin.fulfilled, (state, action: PayloadAction<UserData>) => {
-        state.isLogged = true;
-        state.user = action.payload;
-        if (action.payload.token) {
-          Cookies.set("authToken", action.payload.token, { expires: 7 });
-          Cookies.set("authName", action.payload.name || "", { expires: 7 });
-          Cookies.set("authImage", action.payload.photo || "", { expires: 7 });
-          Cookies.set("authNumber", action.payload.number || "", { expires: 7 });
-        }
-      })
-      .addCase(asyncRegister.fulfilled, (state, action: PayloadAction<UserData>) => {
-        state.isLogged = true;
-        state.user = action.payload;
-        if (action.payload.token) {
-          Cookies.set("authToken", action.payload.token, { expires: 7 });
-          Cookies.set("authName", action.payload.name || "", { expires: 7 });
-          Cookies.set("authImage", action.payload.photo || "", { expires: 7 });
-          Cookies.set("authNumber", action.payload.number || "", { expires: 7 });
-        }
-      })
-      .addCase(googleLogin.fulfilled, (state, action: PayloadAction<UserData>) => {
-        state.isLogged = true;
-        state.user = action.payload;
-        if (action.payload.token) {
-          Cookies.set("authToken", action.payload.token, { expires: 7 });
-          Cookies.set("authName", action.payload.name || "", { expires: 7 });
-          Cookies.set("authImage", action.payload.photo || "", { expires: 7 });
-          Cookies.set("authNumber", action.payload.number || "", { expires: 7 });
-        }
-      })
-      .addCase(checkAuthFromCookie.fulfilled, (state, action: PayloadAction<UserData | null>) => {
-        if (action.payload?.token) {
-          state.isLogged = true;
-          state.user = action.payload;
-        } else {
-          state.isLogged = false;
-          state.user = null;
-        }
-      })
-  },
-});
+export const {signOut} = authSlice.actions
+
+export const asyncSignOut = createAsyncThunk(
+  "auth/signOut",
+  async (_, { dispatch }) => {
+    console.log('sign out 1')
+    await firebaseSignOut(auth);
+    dispatch(signOut());
+  }
+);
+
 
 export default authSlice.reducer;

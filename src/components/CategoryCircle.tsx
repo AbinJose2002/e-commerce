@@ -1,45 +1,32 @@
 'use client'
 
-import Image from 'next/image'
-import jewelry from '../../public/category-bagde/jewewlry.jpg'
-import kitchen from '../../public/category-bagde/kitchen.jpg'
-import groccery from '../../public/category-bagde/groceries.webp'
-import skin from '../../public/category-bagde/skin.jpg'
-import fragrance from '../../public/category-bagde/fragrences.jpg'
-
 import { Avatar, Box, Stack, Typography } from '@mui/material'
 import { useRouter } from 'next/navigation'
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+
+type CategoryType = {
+  slug: string
+  name: string
+  url: string
+}
 
 const CategoryCircle = () => {
-  const category = [
-    {
-      name: 'Groceries',
-      image: groccery,
-      route: 'groceries',
-    },
-    {
-      name: 'Kitchen Accessories',
-      image: kitchen,
-      route: 'kitchen-accessories',
-    },
-    {
-      name: 'Skin Care',
-      image: skin,
-      route: 'skin-care',
-    },
-    {
-      name: 'Womens Jewellery',
-      image: jewelry,
-      route: 'womens-jewellery',
-    },
-    {
-      name: 'Fragrances',
-      image: fragrance,
-      route: 'fragrances',
-    },
-  ]
-
+  const [categories, setCategories] = useState<CategoryType[]>([])
   const router = useRouter()
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await axios.get('https://dummyjson.com/products/categories') // Replace with your actual API endpoint
+        setCategories(res.data)
+      } catch (error) {
+        console.error('Error fetching categories:', error)
+      }
+    }
+
+    fetchCategories()
+  }, [])
 
   return (
     <Box>
@@ -49,37 +36,43 @@ const CategoryCircle = () => {
 
       <Box
         sx={{
-          width: '80%',
+          width: '90%',
           margin: 'auto',
           display: 'flex',
-          flexWrap: 'wrap',
-          justifyContent: 'center',
+          justifyContent: 'start',
           gap: 5,
+          overflowX: 'auto',
+          whiteSpace: 'nowrap',
+          paddingBottom: 2,
+          scrollbarWidth: 'none', // Firefox
+          '&::-webkit-scrollbar': {
+            display: 'none',       // Chrome, Safari, Edge
+          },
         }}
       >
-        {category.map((item, index) => (
+        {categories.map((item, index) => (
           <Stack
             spacing={1}
             direction="column"
             alignItems="center"
             key={index}
             sx={{ cursor: 'pointer' }}
-            onClick={() => router.push(`/products?category=${item.route}`)}
+            onClick={() => router.push(`/products?category=${item.slug}`)}
           >
             <Avatar
               sx={{
-                width: 100,
-                height: 100,
-                bgcolor: 'transparent',
+                width: 50,
+                height: 50,
+                bgcolor: '#000',
+                fontSize: 14,
+                textAlign: 'center',
               }}
             >
-              <Image
-                src={item.image}
-                alt={item.name}
-                width={100}
-                height={100}
-                style={{ borderRadius: '50%', objectFit: 'cover' }}
-              />
+              {item.name
+                .split(' ')
+                .map((word) => word[0])
+                .join('')
+                .toUpperCase()}
             </Avatar>
             <Typography variant="subtitle1" textAlign="center">
               {item.name}

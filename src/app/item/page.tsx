@@ -7,6 +7,7 @@ import { useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
 export type ProductDisplayType = {
+    id? : number
     title?: string
     description?: string
     rating?: number
@@ -57,7 +58,6 @@ const Page = () => {
         const fetchProduct = async () => {
             try {
                 const res = await axios.get(`https://dummyjson.com/products/${itemId}`)
-                console.log(res.data)
                 setProductDisplay(res.data)
                 setProductDetails(res.data)
             } catch (error) {
@@ -65,7 +65,7 @@ const Page = () => {
             }
         }
         fetchProduct()
-    }, [])
+    }, [itemId])
 
   return (
     <Box p={4}>

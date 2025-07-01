@@ -7,6 +7,7 @@ import axios from 'axios'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
+import CategoryCircle from './CategoryCircle'
 
 const Shop = () => {
   const [products, setProducts] = useState<Product[]>([])
@@ -17,6 +18,9 @@ const Shop = () => {
   const searchParams = useSearchParams()
   const category = searchParams.get('category')
   const pagesParam = searchParams.get('pages')
+  const rating: number = Number(searchParams.get('rating'))
+  const minPrice = Number(searchParams.get('minPrice'))
+  const maxPrice = Number(searchParams.get('maxPrice'))
   const pages = pagesParam ? parseInt(pagesParam, 10) : 1
   const limit = 12
   const skip = (pages - 1) * limit
@@ -50,6 +54,7 @@ const Shop = () => {
 
   return (
     <Box p={4}>
+      <CategoryCircle />
       <Breadcrumbs sx={{ mb: 4, color: 'black' }}>
         <Link href="/">Home</Link>
         <Link href="/products">Products</Link>
@@ -61,23 +66,34 @@ const Shop = () => {
       </Breadcrumbs>
 
       <Box display="flex" flexWrap="wrap" gap={4} justifyContent="center">
-        {loading
-          ? 'Loading...'
-          : products.map((item, index) => (
-              <Box key={index}>
-                <ProductCard
-                  id={item.id}
-                  category={item.category}
-                  brand={item.brand}
-                  thumbnail={item.thumbnail}
-                  title={item.title}
-                  price={item.price}
-                  discountPercentage={item.discountPercentage}
-                  rating={item.rating}
-                />
-              </Box>
-            ))}
+  {loading ? (
+    'Loading...'
+  ) : (
+    (rating || minPrice || maxPrice
+      ? products.filter(
+          (item) =>
+            (!isNaN(rating) ? item.rating >= rating : true) &&
+            (!isNaN(minPrice) ? item.price >= minPrice : true) &&
+            (!isNaN(maxPrice) ? item.price <= maxPrice : true)
+        )
+      : products
+    ).map((item, index) => (
+      <Box key={index}>
+        <ProductCard
+          id={item.id}
+          category={item.category}
+          brand={item.brand}
+          thumbnail={item.thumbnail}
+          title={item.title}
+          price={item.price}
+          discountPercentage={item.discountPercentage}
+          rating={item.rating}
+        />
       </Box>
+    ))
+  )}
+</Box>
+
 
       <Box mt={4} display="flex" justifyContent="center">
         <Pagination
