@@ -6,7 +6,7 @@ type CartItem = {
   price: number;
   thumbnail: string;
   count: number;
-  discountPercentage: number | ''
+  discountPercentage: number | 0
 };
 
 export type CartState = {
