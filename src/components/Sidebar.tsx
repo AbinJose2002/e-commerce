@@ -1,35 +1,44 @@
-'use client'
+'use client';
 
-import {
-  Box,
-  Chip,
-  Typography,
-} from '@mui/material'
-import AccordianWrapper from '@/Wrappers/AccordianWrapper'
-import { useSearchParams } from 'next/navigation';
+import { Box, Chip, Stack, Typography } from '@mui/material';
+import AccordianWrapper from '@/Wrappers/AccordianWrapper';
+import { useSearchParams, useRouter } from 'next/navigation';
 
 const Sidebar = () => {
-
   const params = useSearchParams();
-    const rating = params.get('rating');    
-    console.log(rating)
+  const router = useRouter();
 
+  const rating = params.get('rating');
+  const minPrice = params.get('minPrice');
+  const maxPrice = params.get('maxPrice');
 
-    const handleClick = () => {
-      console.log('object')
-    }
-  
+  const handleDelete = (key: string) => {
+    const currentParams = new URLSearchParams(params.toString());
+    console.log(currentParams)
+    currentParams.delete(key);
+
+    const newQuery = currentParams.toString();
+    const newPath = newQuery ? `?${newQuery}` : '/products'; 
+
+    router.push(newPath); 
+  };
+
   return (
     <Box sx={{ width: '100%', p: 2, borderRadius: 3 }}>
-        {rating && (<Box>
-          <Chip label={`Rating: ${rating}`} onClick={handleClick} />
-          </Box>)
-          }
-        <Typography variant="h6" fontWeight="bold" mb={2}>Filters</Typography>
-        <AccordianWrapper />
-        
-    </Box>
-  )
-}
+      {(rating || minPrice || maxPrice) && (
+        <Stack pt={2} spacing={2} direction="row" sx={{ display: 'flex', flexWrap: 'wrap' }}>
+          {rating && <Chip label={`Rating: ${rating}`} onDelete={() => handleDelete('rating')} />}
+          {minPrice && <Chip label={`Min Price: ${minPrice}`} onDelete={() => handleDelete('minPrice')} />}
+          {maxPrice && <Chip label={`Max Price: ${maxPrice}`} onDelete={() => handleDelete('maxPrice')} />}
+        </Stack>
+      )}
 
-export default Sidebar
+      <Typography variant="h6" fontWeight="bold" mb={2}>
+        Filters
+      </Typography>
+      <AccordianWrapper />
+    </Box>
+  );
+};
+
+export default Sidebar;

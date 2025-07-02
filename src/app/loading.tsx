@@ -24,7 +24,7 @@ const Loading = () => {
       flexDirection: 'column',
     }}>
       <ClipLoader color="blue" size={50} />
-      <p style={{ marginTop: '1rem' }}>Redirecting to home...</p>
+      <p style={{ marginTop: '1rem' }}>Loading...</p>
     </div>
   )
 }

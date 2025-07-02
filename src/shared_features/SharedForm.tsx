@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { asyncLogin, googleLogin } from '@/store/AuthSlice';
 import { AppDispatch } from '@/store/store';
-import { Google } from '@mui/icons-material';
+import { Google, Send } from '@mui/icons-material';
 
 import {
     Alert,
@@ -18,12 +18,12 @@ import {
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
-import { loginSchema, registerSchema } from '@/schema';
+import { contactSchema, loginSchema, registerSchema } from '@/schema';
 
 type Props = {
   head?: string;
   subHead?: string;
-  type?: 'login' | 'register';
+  type?: 'login' | 'register' | 'contact';
 };
 
 export type FormType = {
@@ -89,12 +89,9 @@ const SharedForm = (props: Props) => {
     onSubmit: (values) => {
         handleLogin(values)
       console.log('Form Submitted:', values);
-      if (props.type === 'login') {
-        
-      }
     },
-    validationSchema: props.type === 'login' ? loginSchema : registerSchema
-  });
+    validationSchema:
+  props.type === 'login' ? loginSchema : props.type === 'register' ? registerSchema : props.type === 'contact' ? contactSchema : null,});
 
   if (props.type === 'login') {
     return (
@@ -163,7 +160,78 @@ const SharedForm = (props: Props) => {
     );
   }
 
-  return (
+  else if (props.type === 'contact') {
+    return (
+      <Box p={2}>
+        <Stack spacing={2}>
+          <Typography variant="h3">Contact</Typography>
+        </Stack>
+        <form onSubmit={formData.handleSubmit}>
+          <Stack spacing={2}>
+            <TextField
+              name="name"
+              fullWidth
+              label="Name"
+              variant="outlined"
+              value={formData.values.name}
+              onChange={formData.handleChange}
+                helperText={!formData.errors.name && !formData.touched.name ? "" : formData.errors.name} 
+                error={!formData.errors.name && !formData.touched.name ? false : true}
+            />
+            <TextField
+              name="email"
+              fullWidth
+              label="Email Address"
+              variant="outlined"
+              value={formData.values.email}
+              onChange={formData.handleChange}
+                helperText={!formData.errors.email && !formData.touched.email ? "" : formData.errors.email} 
+                error={!formData.errors.email && !formData.touched.email ? false : true}
+            />
+            <TextField
+              name="number"
+              fullWidth
+              label="Mobile Number"
+              variant="outlined"
+              value={formData.values.number}
+              onChange={formData.handleChange}
+                helperText={!formData.errors.number && !formData.touched.number ? "" : formData.errors.number} 
+                error={!formData.errors.number && !formData.touched.number ? false : true}
+            />
+            <TextField
+              rows={3}
+              multiline
+              name="message"
+              fullWidth
+              label="Enter Mesage"
+              variant="outlined"
+            />
+            
+            <Button
+              type="button"
+              sx={{ bgcolor: 'black' }}
+              variant="contained"
+              startIcon={<Send />}
+            >
+              Send Enquiry
+            </Button>
+          </Stack>
+        </form>
+
+        <Snackbar open={open} anchorOrigin={{horizontal: 'right', vertical: 'bottom'}} autoHideDuration={6000} onClose={() => setOpen(false)}>
+            <Alert severity={alertSeverity} onClose={() => setOpen(false)} sx={{ width: '100%' }}>
+                {alertMessage}
+            </Alert>
+        </Snackbar>
+
+
+
+      </Box>
+    );
+  }
+
+  else {
+    return (
     <Box p={2}>
       <Stack spacing={2}>
         <Typography variant="h3">Register</Typography>
@@ -256,7 +324,7 @@ const SharedForm = (props: Props) => {
         </Stack>
       </form>
     </Box>
-  );
+  );}
 };
 
 export default SharedForm;

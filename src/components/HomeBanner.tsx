@@ -1,4 +1,5 @@
 import { Button, Divider, Stack, Typography } from '@mui/material'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 type Props = {
     head?: string
@@ -6,11 +7,12 @@ type Props = {
 }
 
 const HomeBanner = ({head, para}: Props) => {
+    const router = useRouter()
   return (
     <Stack spacing={3} padding={8}  >
         <Typography variant='h2'>{head}</Typography>
         <Typography variant='subtitle1'>{para}</Typography>
-        <Button sx={{ backgroundColor: 'black', width: "50%", borderRadius: "20px" }} variant="contained">Shop Now</Button>
+        <Button sx={{ backgroundColor: 'black', width: "50%", borderRadius: "20px" }} variant="contained" onClick={()=>router.push('/products')}>Shop Now</Button>
         <Stack spacing={4} divider={<Divider orientation='vertical' />} direction={{xs: 'column', md: 'row'}}>
             <Stack direction='column'>
                 <Typography variant='h2'>200+</Typography>
