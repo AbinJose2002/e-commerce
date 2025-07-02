@@ -1,13 +1,31 @@
 'use client'
 
-import { Box, Tab, Tabs, Typography } from '@mui/material'
+import { Box, Grid, Tab, Tabs, Typography } from '@mui/material'
 import React, { useState } from 'react'
+import OrderCard from './OrderCard';
 
 function a11yProps(index: number) {
   return {
     id: `simple-tab-${index}`,
     'aria-controls': `simple-tabpanel-${index}`,
   };
+}
+
+// ✅ Custom tab panel that shows content only when active
+function CustomTabPanel(props: { children: React.ReactNode; value: number; index: number }) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+    </div>
+  );
 }
 
 const Orders = () => {
@@ -33,8 +51,8 @@ const Orders = () => {
           <Tabs
             value={value}
             onChange={handleChange}
-            variant="fullWidth" // 👈 forces tabs to take equal width
-            TabIndicatorProps={{ style: { display: 'none' } }} // hide bottom indicator
+            variant="fullWidth"
+            TabIndicatorProps={{ style: { display: 'none' } }}
           >
             {['On Shipping', 'Arrived', 'Cancelled'].map((label, index) => (
               <Tab
@@ -46,13 +64,37 @@ const Orders = () => {
                   fontWeight: value === index ? 'bold' : 'normal',
                   borderRadius: 20,
                   mx: 1,
-                  textTransform: 'none'
+                  textTransform: 'none',
                 }}
               />
             ))}
           </Tabs>
         </Box>
       </Box>
+
+      {/* ✅ Tab Content */}
+      <CustomTabPanel value={value} index={0}>
+        <Grid container spacing={2}>
+            <Grid size={{ xs: 12, md: 6 }}>
+                <OrderCard/>
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+                <OrderCard/>
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+                <OrderCard/>
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+                <OrderCard/>
+            </Grid>
+        </Grid>
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={1}>
+        Arrived Orders
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={2}>
+        Cancelled Orders
+      </CustomTabPanel>
     </div>
   );
 };
