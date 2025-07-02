@@ -44,10 +44,7 @@ const CategoryCircle = () => {
           overflowX: 'auto',
           whiteSpace: 'nowrap',
           paddingBottom: 2,
-          scrollbarWidth: 'none', // Firefox
-          '&::-webkit-scrollbar': {
-            display: 'none',       // Chrome, Safari, Edge
-          },
+          
         }}
       >
         {categories.map((item, index) => (

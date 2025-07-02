@@ -1,8 +1,8 @@
 'use client'
 import Shop from '@/components/Shop'
 import Sidebar from '@/components/Sidebar'
-import { FileCopy, Print, Save, Share } from '@mui/icons-material'
-import { Box, SpeedDial, SpeedDialAction, SpeedDialIcon, Stack, useMediaQuery, useTheme } from '@mui/material'
+import { FileCopy, FilterList, Print, Save, Share } from '@mui/icons-material'
+import { Box, SpeedDial, SpeedDialAction, Stack, useMediaQuery, useTheme } from '@mui/material'
 import React from 'react'
 
 const Page = () => {
@@ -29,7 +29,7 @@ const Page = () => {
   <SpeedDial
   ariaLabel="SpeedDial basic example"
   sx={{ position: 'absolute', bottom: 16, right: 16 }}
-  icon={<SpeedDialIcon  />}
+  icon={<FilterList  />}
 >
   {actions.map((action) => (
     <SpeedDialAction

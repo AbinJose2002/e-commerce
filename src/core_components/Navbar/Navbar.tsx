@@ -108,7 +108,7 @@ const Navbar = () => {
   );
 
   return (
-    <Box>
+    <Box width={1}>
       <Box
         sx={{
           display: 'flex',

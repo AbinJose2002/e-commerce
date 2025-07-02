@@ -12,7 +12,9 @@ const page = () => {
       <Carousel />
       <BrandBar />
       <FeatureProducts />
-      <CategoryCircle />
+      <Box width={.8} margin={'auto'}>
+        <CategoryCircle />
+      </Box>
     </Box>
   )
 }

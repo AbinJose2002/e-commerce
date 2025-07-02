@@ -4,11 +4,12 @@ import React, { useEffect } from 'react';
 import Navbar from '../Navbar/Navbar';
 import store, { AppDispatch } from '@/store/store';
 import { Provider, useDispatch } from 'react-redux';
-import { createTheme, ThemeProvider } from "@mui/material";
+import { Box, createTheme, ThemeProvider } from "@mui/material";
 import Footer from '../Footer/Footer';
 import TopBar from '../TopBar/TopBar';
 import NewsLetter from '../Footer/NewsLetter';
 import { checkAuthFromCookie } from '@/store/AuthSlice';
+import { usePathname } from 'next/navigation';
 
 type Props = {
     children: React.ReactNode;
@@ -54,15 +55,25 @@ const InitAuthChecker = () => {
 };;
 
 const ReduxProvider = ({ children }: Props) => {
+  const pathname = usePathname()
+  console.log(pathname)
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <InitAuthChecker />
-        <TopBar />
-        <Navbar />
-        {children}
-        <NewsLetter />
-        <Footer />
+        {pathname === '/dashboard' ? 
+        <Box>
+            <Navbar />
+          {children}
+        </Box>: 
+        <Box>
+          <TopBar />
+          <Navbar />
+          {children}
+          <NewsLetter />
+          <Footer />
+          </Box>
+        }
       </ThemeProvider>
     </Provider>
   );
