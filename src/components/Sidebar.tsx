@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react'
 import { Box, Chip, Stack, Typography } from '@mui/material';
 import AccordianWrapper from '@/Wrappers/AccordianWrapper';
 import { useSearchParams, useRouter } from 'next/navigation';

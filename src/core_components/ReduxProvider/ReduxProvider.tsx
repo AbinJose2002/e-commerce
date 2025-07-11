@@ -7,7 +7,7 @@ import { Provider, useDispatch } from 'react-redux';
 import { Box, createTheme, ThemeProvider } from "@mui/material";
 import Footer from '../Footer/Footer';
 import TopBar from '../TopBar/TopBar';
-import NewsLetter from '../Footer/NewsLetter';
+import NewsLetter from '../Footer/newsletter/NewsLetter';
 import { checkAuthFromCookie } from '@/store/AuthSlice';
 import { usePathname } from 'next/navigation';
 
@@ -17,7 +17,7 @@ type Props = {
 
 const theme = createTheme({
   typography: {
-    fontFamily: "'Bebas Neue', sans-serif",
+    fontFamily: "Poppins, 'Bebas Neue', sans-serif",
   },
   palette: {
     primary: {

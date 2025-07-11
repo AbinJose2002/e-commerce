@@ -1,20 +1,20 @@
 'use client'
-import ProductDetails from '@/shared_features/product_page/ProductDetails'
-import ProductDisplay from '@/shared_features/product_page/ProductDisplay'
+import ProductDetails from '@/shared_features/product_page/product-details/ProductDetails'
+import ProductDisplay from '@/shared_features/product_page/product-display/ProductDisplay'
 import { Box } from '@mui/material'
 import axios from 'axios'
 import { useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
 export type ProductDisplayType = {
-    id? : number
-    title?: string
-    description?: string
-    rating?: number
-    price?: number
-    discountPercentage?: number
-    thumbnail?: string
-    images?: string[]
+    id : number
+    title: string
+    description: string
+    rating: number
+    price: number
+    discountPercentage: number
+    thumbnail: string
+    images: string[]
     availabilityStatus: string
 }
 

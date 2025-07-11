@@ -2,7 +2,7 @@
 
 import { Box, Grid, Tab, Tabs, Typography } from '@mui/material'
 import React, { useState } from 'react'
-import OrderCard from './OrderCard';
+import OrderCard from '../order-card/OrderCard';
 
 function a11yProps(index: number) {
   return {
@@ -11,7 +11,6 @@ function a11yProps(index: number) {
   };
 }
 
-// ✅ Custom tab panel that shows content only when active
 function CustomTabPanel(props: { children: React.ReactNode; value: number; index: number }) {
   const { children, value, index, ...other } = props;
 

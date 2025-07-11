@@ -1,13 +1,15 @@
 'use client';
 
+import React from 'react'
 import { Box, Typography, Grid, Stack, IconButton } from '@mui/material';
 import { Facebook, Twitter, Instagram } from '@mui/icons-material';
 import Image from 'next/image';
-import gpay from '../../../public/payment-icons/gpay.webp'
-import visa from '../../../public/payment-icons/visa.png'
-import mastercard from '../../../public/payment-icons/mastercard.jpg'
-import applepay from '../../../public/payment-icons/applepay.png'
-import paypal from '../../../public/payment-icons/paypal.png'
+
+const paypal = 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/PayPal_2024.svg/500px-PayPal_2024.svg.png'
+const applepay = 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Apple_Pay_logo.svg/250px-Apple_Pay_logo.svg.png'
+const mastercard = 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Mastercard_2019_logo.svg/330px-Mastercard_2019_logo.svg.png'
+const visa = 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Visa_2021.svg/500px-Visa_2021.svg.png'
+const gpay = 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Google_Pay_Logo.svg/330px-Google_Pay_Logo.svg.png'
 
 const Footer = () => {
 
@@ -85,13 +87,13 @@ const Footer = () => {
         <Typography variant="caption" color="text.secondary">
           Kidilam store © 2000–2023, All Rights Reserved
         </Typography>
-        <Stack direction="row" spacing={1} mt={{ xs: 2, md: 0 }}>
+        <Stack direction="row" spacing={2} mt={{ xs: 2, md: 0 }}>
           {paymentIcons.map((icon) => (
             <Image
               key={icon.alt}
               src={icon.src} 
               alt={icon.alt}
-              width={36}
+              width={46}
               height={24}
             />
           ))}

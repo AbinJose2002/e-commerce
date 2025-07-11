@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Paper, Stack } from '@mui/material';
 import Image from 'next/image';
 import shop from '../../../public/shop.jpg';
-import SharedForm from '@/shared_features/SharedForm';
+import SharedForm from '@/shared_features/sharedform/SharedForm';
 
 const Page = () => {
   return (

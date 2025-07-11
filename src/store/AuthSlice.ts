@@ -1,5 +1,5 @@
-import { auth, provider } from "@/core_components/firebase/firebase";
-import { FormType } from "@/shared_features/SharedForm";
+import { auth, provider } from "../core_components/firebase/firebase";
+import { FormType } from "../shared_features/sharedform/SharedForm";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import Cookies from 'js-cookie';
 import {
@@ -34,7 +34,6 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     signOut: (state) => {
-      console.log('sign out 2')
         state.isLogged = false;
         state.user = null;
         Cookies.remove("authToken");
@@ -64,6 +63,15 @@ const authSlice = createSlice({
           Cookies.set("authImage", action.payload.photo || "", { expires: 7 });
           Cookies.set("authNumber", action.payload.number || "", { expires: 7 });
         }
+      })
+      .addCase(asyncRegister.rejected, (state) => {
+        state.isLogged = false;
+        state.user = null;
+
+        Cookies.remove("authToken");
+        Cookies.remove("authName");
+        Cookies.remove("authImage");
+        Cookies.remove("authNumber");
       })
       .addCase(googleLogin.fulfilled, (state, action: PayloadAction<UserData>) => {
         state.isLogged = true;
@@ -118,7 +126,6 @@ export const asyncLogin = createAsyncThunk<UserData, FormType>(
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-
       return {
         token: await user.getIdToken(),
         name: user.displayName,
@@ -137,26 +144,17 @@ export const asyncLogin = createAsyncThunk<UserData, FormType>(
 
 export const asyncRegister = createAsyncThunk<UserData, FormType>(
   "auth/register",
-  async (value, { rejectWithValue }) => {
+  async (value) => {
     const { email, password, name } = value;
-    try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
       await updateProfile(user, { displayName: name });
-
       return {
         token: await user.getIdToken(),
         name: user.displayName,
         photo: user.photoURL,
         number: user.phoneNumber,
       };
-    }  
-    catch (error) {
-      if (error instanceof Error) {
-        return rejectWithValue(error.message);
-      }
-      return rejectWithValue("An unknown error occurred");
-    }
   }
 );
 
@@ -188,7 +186,6 @@ export const {signOut} = authSlice.actions
 export const asyncSignOut = createAsyncThunk(
   "auth/signOut",
   async (_, { dispatch }) => {
-    console.log('sign out 1')
     await firebaseSignOut(auth);
     dispatch(signOut());
   }

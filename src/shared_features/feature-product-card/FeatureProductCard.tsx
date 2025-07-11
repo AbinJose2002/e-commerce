@@ -3,8 +3,8 @@
 import { Box, Stack, Typography } from '@mui/material'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import SkeletonCard from './SkeletonCard'
-import ProductCard from './ProductCard'
+import SkeletonCard from '../skeleton/SkeletonCard'
+import ProductCard from '../product_card/ProductCard'
 
 export type Product = {
   id: number;

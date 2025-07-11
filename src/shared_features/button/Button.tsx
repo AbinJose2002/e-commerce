@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react'
 import { type CSSProperties } from 'react'
 import {Button} from '@mui/material'
 
@@ -17,7 +18,7 @@ const ButtonComp = (props: Props) => {
 
   return (
     <div>
-        <button className={props.classname} style={props.style} >{props.value}</button>
+        <button className={props.classname} style={props.style} name={props.value}>{props.value}</button>
         <Button ></Button>
     </div>
   )

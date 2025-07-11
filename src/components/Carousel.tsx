@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import Headphone from './Headphone';
-import HomeBanner from './HomeBanner';
+import Headphone from './headphone/Headphone';
+import HomeBanner from './HomeBanner/HomeBanner';
 import { Stack, Button, Box } from '@mui/material';
 import { ArrowBackIosNew, ArrowForwardIos } from '@mui/icons-material';
 

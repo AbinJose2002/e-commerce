@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { Box, Tab } from '@mui/material';
-import SharedForm from '@/shared_features/SharedForm';
+import SharedForm from '../../shared_features/sharedform/SharedForm';
 
 const Tabs = () => {
   const [value, setValue] = useState('1');

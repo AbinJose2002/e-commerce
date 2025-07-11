@@ -7,8 +7,8 @@ export type WishlistItem = {
   thumbnail: string;
   discountPercentage: number
   rating: number
- brand: string
-};
+  brand: string
+}; 
 
 export type WishlistState = {
   items: WishlistItem[];

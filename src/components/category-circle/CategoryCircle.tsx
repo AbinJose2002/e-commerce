@@ -1,9 +1,10 @@
 'use client'
 
+import React from 'react'
 import { Avatar, Box, Stack, Typography } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
-import { useEffect, useState } from 'react'
+import  { useEffect, useState } from 'react'
 
 type CategoryType = {
   slug: string
@@ -30,7 +31,7 @@ const CategoryCircle = () => {
 
   return (
     <Box>
-      <Typography variant="h4" align="center" sx={{ py: 5 }}>
+      <Typography title='category-title' variant="h4" align="center" sx={{ py: 5 }}>
         Shop by Category
       </Typography>
 
@@ -49,6 +50,8 @@ const CategoryCircle = () => {
       >
         {categories.map((item, index) => (
           <Stack
+          role={item.slug}
+          data-testid={item.slug}
             spacing={1}
             direction="column"
             alignItems="center"

@@ -1,15 +1,17 @@
 import { AirportShuttle, DoubleArrow, LocationPin } from '@mui/icons-material'
 import { Chip, Paper, Stack, Typography } from '@mui/material'
 import React from 'react'
-import shoe from '../../public/shoe.webp'
+// import shoe from '../../public/shoe.webp'
 import Image from 'next/image'
+
+const shoe = 'https://cdn.dummyjson.com/product-images/mens-shoes/nike-air-jordan-1-red-and-black/thumbnail.webp'
 
 const OrderCard = () => {
   return (
     <Paper elevation={10} sx={{padding: '16px', borderRadius:'20px'}} >
         <Stack>
             <Stack direction={'row'} justifyContent={'space-between'}>
-                <Stack>
+                <Stack direction={{xs: 'row', md: 'column'}}>
                     <Typography variant='caption'>Order Id#</Typography>
                     <Typography variant='h6'>123456</Typography>
                 </Stack>

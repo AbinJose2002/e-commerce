@@ -3,15 +3,15 @@
 import { Box, Button, Rating, Stack, Typography } from '@mui/material'
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
-import { ProductDisplayType } from '@/app/item/page'
-import { getDiscountedPrice } from '../commonFunctions'
+import { ProductDisplayType } from '../../../app/item/page'
 import { useDispatch } from 'react-redux'
-import { AppDispatch } from '@/store/store'
-import { addToCart } from '@/store/cartslice'
+import { AppDispatch } from '../../../store/store'
+import { addToCart } from '../../../store/cartslice'
 import { useRouter } from 'next/navigation'
+import { convertUSD, getDiscountedPrice } from '../../commonFunctions'
 
 type Props = {
-  prodDis?: ProductDisplayType
+  prodDis: ProductDisplayType
 }
 
 const ProductDisplay = ({ prodDis }: Props) => {
@@ -24,12 +24,12 @@ const handleAddToCart = () => {
 
   dispatch(
     addToCart({
-      itemId: prodDis.id as number,
-      title: prodDis.title || '',
-      price: prodDis.price || 0,
-      thumbnail: prodDis.thumbnail || '',
+      itemId: prodDis.id as number ,
+      title: prodDis.title,
+      price: prodDis.price,
+      thumbnail: prodDis.thumbnail,
       count: 1,
-      discountPercentage: prodDis.discountPercentage || 0
+      discountPercentage: prodDis.discountPercentage
     })
   );
 }
@@ -91,7 +91,7 @@ const handleBuyNow = (id: number) => {
           </Typography>
 
           <Stack direction="row" alignItems="center" spacing={1} mb={1}>
-            <Rating value={prodDis?.rating || 0} precision={0.1} readOnly />
+            <Rating value={prodDis.rating} precision={0.1} readOnly />
             <Typography variant="caption" color="text.secondary">
               ({prodDis?.rating} / 5)
             </Typography>
@@ -99,11 +99,12 @@ const handleBuyNow = (id: number) => {
 
           <Stack direction="row" alignItems="center" spacing={3} mb={2}>
             <Typography variant="h5" color="primary" fontWeight="bold">
-              ₹{getDiscountedPrice(prodDis?.price || 0, prodDis?.discountPercentage || 0)}
+              {/* ₹{getDiscountedPrice(prodDis?.price || 0, prodDis?.discountPercentage || 0)} */}
+              ₹{getDiscountedPrice(prodDis.price, prodDis.discountPercentage)}
             </Typography>
 
             <Typography variant="h6" color="text.secondary" sx={{ textDecoration: 'line-through' }}>
-              ₹{prodDis?.price}
+              ₹{convertUSD(prodDis.price)}
             </Typography>
 
             <Typography variant="caption" color="error">
@@ -136,7 +137,8 @@ const handleBuyNow = (id: number) => {
                       mt: 2,
                       '&:hover': { backgroundColor: '#222' },
                     }}
-                    fullWidth variant='contained'>Buy Now</Button>
+                    fullWidth variant='contained'
+                    name='buy-now'>Buy Now</Button>
             </Stack>          
         </Box>
       </Stack>

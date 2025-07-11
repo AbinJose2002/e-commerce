@@ -5,10 +5,11 @@ import React from 'react'
 import Image from 'next/image'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import { useRouter } from 'next/navigation'
-import { convertUSD, getDiscountedPrice } from './commonFunctions'
+import { convertUSD, getDiscountedPrice } from '../commonFunctions'
 import { useDispatch, useSelector } from 'react-redux'
-import { AppDispatch, RootState } from '@/store/store'
-import { addToWishlist } from '@/store/wishliststore'
+import { AppDispatch, RootState } from '../../store/store'
+import { addToWishlist, removeFromWishlist } from '../../store/wishliststore' // ✅ 1. Add this
+import {motion} from 'framer-motion'
 
 type Props = {
   id?: number
@@ -40,7 +41,7 @@ const ProductCard = ({
     router.push(`/item?product=${item}`)
   }
 
-  const handleWishIcon = (e: React.MouseEvent<SVGSVGElement>) => {
+  const handleWishIcon = (e: React.MouseEvent) => {
     e.stopPropagation()
     if (!isWishlisted) {
       dispatch(
@@ -54,20 +55,28 @@ const ProductCard = ({
           brand,
         })
       )
+    } else {
+      dispatch(removeFromWishlist(id!)) 
     }
   }
 
   return (
-    <Box onClick={() => handleProductSelect(id as number)}>
+    <Box data-testid='product-card' onClick={() => handleProductSelect(id as number)}>
       <Paper
         elevation={10}
         sx={{ minHeight: 350, width: 250, borderRadius: '20px', padding: 2, position: 'relative' }}
       >
         <Stack spacing={1}>
           <Box sx={{ position: 'absolute', top: 16, right: 16 }}>
-            <IconButton >
-              <FavoriteIcon onClick={handleWishIcon} sx={{ color: isWishlisted ? 'red' : 'grey' }} />
-            </IconButton>
+            <motion.div
+              onClick={handleWishIcon}
+              animate={isWishlisted ? { scale: [1, 3, 2, 1] } : { scale: 1 }}
+              transition={{ duration: 0.4 }}
+            >
+              <IconButton>
+                <FavoriteIcon sx={{ color: isWishlisted ? 'red' : 'grey' }} />
+              </IconButton>
+            </motion.div>
 
           </Box>
 
@@ -87,28 +96,43 @@ const ProductCard = ({
             <Typography variant='caption'>({rating})</Typography>
           </Stack>
 
-          <Typography variant='caption' fontWeight='bold' noWrap>
-            {brand}, {category}
-          </Typography>
+          <Stack direction='row' spacing={1}>
+            <Typography variant='caption' fontWeight='bold' noWrap>
+              {brand}
+            </Typography>
+            <Typography variant='caption' fontWeight='bold' noWrap>
+              {category}
+            </Typography>
+          </Stack>
 
           <Box display='flex' alignItems='baseline' gap={1}>
-            <Stack direction='row' alignItems='center' spacing={3}>
-              <Typography variant='h5' color='primary' fontWeight='bold'>
-                ₹{getDiscountedPrice(price, discountPercentage)}
-              </Typography>
+            <Stack direction="column" spacing={2}>
+          {/* Final Price */}
+          <Typography variant="h5" color="primary" fontWeight="bold">
+            ₹{getDiscountedPrice(price, discountPercentage)}
+          </Typography>
 
-              <Typography
-                variant='h6'
-                color='text.secondary'
-                sx={{ textDecoration: 'line-through' }}
-              >
-                ₹{convertUSD(price)}
-              </Typography>
+          {/* Original Price & Discount */}
+          <Stack
+            direction="row"
+            spacing={1.5}
+            alignItems="center"
+            flexWrap="wrap"
+          >
+            <Typography
+              variant="h6"
+              color="text.secondary"
+              sx={{ textDecoration: 'line-through' }}
+            >
+              ₹{convertUSD(price)}
+            </Typography>
 
-              <Typography variant='caption' color='error'>
-                ({discountPercentage}% off)
-              </Typography>
-            </Stack>
+            <Typography variant="caption" color="error" fontWeight="medium">
+              ({discountPercentage}% off)
+            </Typography>
+          </Stack>
+        </Stack>
+
           </Box>
         </Stack>
       </Paper>

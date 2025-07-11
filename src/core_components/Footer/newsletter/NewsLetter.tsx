@@ -1,6 +1,6 @@
 'use client'
 
-import TextInput from '@/shared_features/TextInput'
+import TextInput from '../../../shared_features/TextInput/TextInput'
 import { Box, Typography, Button, Stack } from '@mui/material'
 import MailIcon from '@mui/icons-material/Mail';
 import React from 'react'
@@ -13,7 +13,7 @@ const NewsLetter = () => {
           <Typography variant="h3">STAY UPTO DATE ABOUT OUR LATEST OFFERS</Typography>
           <Stack direction={'column'} spacing={2}>
             <TextInput  label="Enter your email" icon={<MailIcon />}  />
-            <Button variant="contained" sx={{backgroundColor: 'white', color: 'black'}}>Subscribe</Button>
+            <Button data-testid='newsletter-button' variant="contained" sx={{backgroundColor: 'white', color: 'black'}}>Subscribe</Button>
           </Stack>
         </Stack>
       </Box>

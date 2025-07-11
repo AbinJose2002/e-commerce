@@ -1,4 +1,4 @@
-import FeatureProductCard from '@/shared_features/FeatureProductCard'
+import FeatureProductCard from '@/shared_features/feature-product-card/FeatureProductCard'
 import { Box } from '@mui/material'
 import React from 'react'
 

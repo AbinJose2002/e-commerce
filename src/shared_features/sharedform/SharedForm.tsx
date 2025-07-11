@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { asyncLogin, googleLogin } from '@/store/AuthSlice';
-import { AppDispatch } from '@/store/store';
+import { asyncLogin, asyncRegister, googleLogin } from '../../store/AuthSlice';
+import { AppDispatch } from '../../store/store';
 import { Google, Send } from '@mui/icons-material';
 
 import {
@@ -18,7 +18,8 @@ import {
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
-import { contactSchema, loginSchema, registerSchema } from '@/schema';
+import { contactSchema, loginSchema, registerSchema } from '../../schema/index';
+import { useRouter } from 'next/navigation';
 
 type Props = {
   head?: string;
@@ -40,32 +41,35 @@ const SharedForm = (props: Props) => {
     const [open, setOpen] = useState(false);
     const [alertMessage, setAlertMessage] = useState('');
     const [alertSeverity, setAlertSeverity] = useState<'success' | 'error'>('success');
-
+    const router = useRouter()
 
     const handleGoogleLogin = async () => {
         try {
             const action = await dispatch(googleLogin());
 
             if (googleLogin.fulfilled.match(action)) {
-                setAlertMessage('Logged in successfully!');
-                setAlertSeverity('success'); 
+              setAlertMessage('Logged in successfully!');
+              setAlertSeverity('success'); 
             } else {
-                throw new Error("Login failed");
+              throw new Error("Login failed");
             }
-        } catch  {
+          } catch  {
             setAlertMessage('Login failed.');
             setAlertSeverity('error'); 
-        } finally {
+          } finally {
             setOpen(true); 
+            setTimeout(() => {
+              router.push('/')
+            }, 3000);
         }
-    };
-
+      };
+      
     const handleLogin = async (values: FormType) => {
-        try {
-            const resultAction = await dispatch(asyncLogin(values));
+      try {
+        const resultAction = await dispatch(asyncLogin(values));
 
-            if (asyncLogin.fulfilled.match(resultAction)) {
-                setAlertMessage('Logged in successfully!');
+        if (asyncLogin.fulfilled.match(resultAction)) {
+          setAlertMessage('Logged in successfully!');
                 setAlertSeverity('success'); 
             } else {
                 throw new Error("Login failed");
@@ -75,6 +79,38 @@ const SharedForm = (props: Props) => {
             setAlertSeverity('error');
         } finally {
             setOpen(true);  
+            setTimeout(() => {
+              router.push('/')
+            }, 3000);
+        }
+    };
+
+    const handleContact = () => {
+      setAlertMessage('Message sent successfully!');
+      setAlertSeverity('success');
+      setOpen(true);
+      setTimeout(() => {
+        router.push('/')
+      }, 3000);
+    }
+
+    const handleRegister = async (values: FormType) => {
+        try {
+            const resultAction = await dispatch(asyncRegister(values));
+            if (asyncRegister.fulfilled.match(resultAction)) {
+                setAlertMessage('Registration successfully!');
+                setAlertSeverity('success'); 
+            } else {
+                throw new Error("Login failed");
+            }
+        } catch  {
+            setAlertMessage('Login failed.');
+            setAlertSeverity('error');
+        } finally {
+            setOpen(true);  
+            setTimeout(() => {
+              router.push('/')
+            }, 3000);
         }
     };
 
@@ -87,8 +123,17 @@ const SharedForm = (props: Props) => {
       number: '',
     },
     onSubmit: (values) => {
-        handleLogin(values)
-      console.log('Form Submitted:', values);
+      console.log('object')
+      if (props.type === 'login') {
+        console.log('message success')
+        handleLogin(values);
+      } else if (props.type === 'register') {
+        console.log('message success')
+        handleRegister(values);
+      } else if (props.type === 'contact'){
+        console.log('message success')
+        handleContact();
+      }
     },
     validationSchema:
   props.type === 'login' ? loginSchema : props.type === 'register' ? registerSchema : props.type === 'contact' ? contactSchema : null,});
@@ -97,7 +142,7 @@ const SharedForm = (props: Props) => {
     return (
       <Box p={2}>
         <Stack spacing={2}>
-          <Typography variant="h3">Login</Typography>
+          <Typography variant="h3">User Login</Typography>
           <Typography variant="h4">Log Into An Exclusive</Typography>
         </Stack>
         <form onSubmit={formData.handleSubmit}>
@@ -129,7 +174,7 @@ const SharedForm = (props: Props) => {
                 variant="contained"
                 sx={{ minWidth: '100px', bgcolor: 'black' }}
               >
-                Login
+                Login Now
               </Button>
               <Link underline="none" color="black">
                 Forget Password?
@@ -148,8 +193,8 @@ const SharedForm = (props: Props) => {
           </Stack>
         </form>
 
-        <Snackbar open={open} anchorOrigin={{horizontal: 'right', vertical: 'bottom'}} autoHideDuration={6000} onClose={() => setOpen(false)}>
-            <Alert severity={alertSeverity} onClose={() => setOpen(false)} sx={{ width: '100%' }}>
+        <Snackbar data-testid='alert' open={open} anchorOrigin={{horizontal: 'right', vertical: 'bottom'}} autoHideDuration={3000} >
+            <Alert role='alert' severity={alertSeverity}  sx={{ width: '100%' }}>
                 {alertMessage}
             </Alert>
         </Snackbar>
@@ -208,18 +253,17 @@ const SharedForm = (props: Props) => {
             />
             
             <Button
-              type="button"
-              sx={{ bgcolor: 'black' }}
+              type="submit"
               variant="contained"
-              startIcon={<Send />}
+              sx={{ minWidth: '100px', bgcolor: 'black' }}
             >
               Send Enquiry
             </Button>
           </Stack>
         </form>
 
-        <Snackbar open={open} anchorOrigin={{horizontal: 'right', vertical: 'bottom'}} autoHideDuration={6000} onClose={() => setOpen(false)}>
-            <Alert severity={alertSeverity} onClose={() => setOpen(false)} sx={{ width: '100%' }}>
+        <Snackbar data-testid='alert' open={open} anchorOrigin={{horizontal: 'right', vertical: 'bottom'}} autoHideDuration={3000} >
+            <Alert role='alert' severity={alertSeverity}  sx={{ width: '100%' }}>
                 {alertMessage}
             </Alert>
         </Snackbar>
@@ -234,12 +278,12 @@ const SharedForm = (props: Props) => {
     return (
     <Box p={2}>
       <Stack spacing={2}>
-        <Typography variant="h3">Register</Typography>
+        <Typography variant="h3">User Register</Typography>
         <Typography variant="h4">Create A New Account</Typography>
       </Stack>
       <form onSubmit={formData.handleSubmit}>
-        <Snackbar open={open} anchorOrigin={{horizontal: 'right', vertical: 'bottom'}} autoHideDuration={6000} onClose={() => setOpen(false)}>
-            <Alert severity={alertSeverity} onClose={() => setOpen(false)} sx={{ width: '100%' }}>
+        <Snackbar open={open} anchorOrigin={{horizontal: 'right', vertical: 'bottom'}} autoHideDuration={6000} >
+            <Alert severity={alertSeverity} sx={{ width: '100%' }}>
                 {alertMessage}
             </Alert>
         </Snackbar>
@@ -305,7 +349,7 @@ const SharedForm = (props: Props) => {
               variant="contained"
               sx={{ minWidth: '100px', bgcolor: 'black' }}
             >
-              Register
+              Register Now
             </Button>
             <Link underline="none" color="black">
               Forget Password?

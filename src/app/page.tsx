@@ -1,5 +1,5 @@
 import Carousel from '@/components/Carousel'
-import CategoryCircle from '@/components/CategoryCircle'
+import CategoryCircle from '@/components/category-circle/CategoryCircle'
 import FeatureProducts from '@/components/FeatureProducts'
 import BrandBar from '@/core_components/BrandBar/BrandBar'
 

@@ -1,7 +1,7 @@
 'use client'
 
-import { Product } from '@/shared_features/FeatureProductCard'
-import ProductCard from '@/shared_features/ProductCard'
+import { Product } from '@/shared_features/feature-product-card/FeatureProductCard'
+import ProductCard from '@/shared_features/product_card/ProductCard'
 import {
   Box,
   Breadcrumbs,
@@ -16,7 +16,7 @@ import axios from 'axios'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
-import CategoryCircle from './CategoryCircle'
+import CategoryCircle from './category-circle/CategoryCircle'
 
 const Shop = () => {
   const [products, setProducts] = useState<Product[]>([])

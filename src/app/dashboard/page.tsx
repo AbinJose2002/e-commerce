@@ -1,7 +1,7 @@
 'use client'
 
 import DashSidebar from '@/components/DashSidebar'
-import Orders from '@/components/Orders'
+import Orders from '@/components/orders/Orders'
 import AuthGuard from '@/core_components/authguard/AuthGuard'
 import { Box, useMediaQuery, useTheme } from '@mui/material'
 import React from 'react'

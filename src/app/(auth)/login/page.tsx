@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Stack } from '@mui/material';
-import Tabs from '@/components/Tabs';
+import Tabs from '@/components/Tabs/Tabs';
 import Image from 'next/image';
 import shop from '../../../../public/shop.jpg';
 

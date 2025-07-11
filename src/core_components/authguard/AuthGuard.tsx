@@ -3,7 +3,7 @@
 
 import { RootState } from '@/store/store';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 type Props = {
