@@ -7,24 +7,31 @@ import { Stack, Button, Box } from '@mui/material';
 import { ArrowBackIosNew, ArrowForwardIos } from '@mui/icons-material';
 
 const Carousel = () => {
-  const bannerContent = [
-    {
-      type: 'headphones',
-      model: 'headphones',
-      head: 'FIND HEADPHONES THAT MATCH YOUR VIBE',
-      para: 'Discover premium headphones crafted to elevate your music experience — from rich bass to crystal-clear sound. Designed for comfort, performance, and style.',
-      scale: [1.6, 1.6, 1.6],
-      position: [0, 0.2, 0],
-    },
-    {
-      type: 'tshirt',
-      model: 'tshirt',
-      head: 'FIND T-SHIRTS THAT DEFINE YOUR STYLE',
-      para: 'Explore our collection of premium T-shirts designed for comfort and self-expression — perfect fits, soft fabrics, and bold designs for every vibe.',
-      scale: [1, 1, 1],
-      position: [0, -1, 0],
-    },
-  ];
+  const bannerContent: {
+  type: string;
+  model: string;
+  head: string;
+  para: string;
+  scale: [number, number, number];
+  position: [number, number, number];
+}[] = [
+  {
+    type: 'headphones',
+    model: 'headphones',
+    head: 'FIND HEADPHONES THAT MATCH YOUR VIBE',
+    para: 'Discover premium headphones crafted to elevate your music experience — from rich bass to crystal-clear sound. Designed for comfort, performance, and style.',
+    scale: [1.6, 1.6, 1.6],
+    position: [0, 0.2, 0],
+  },
+  {
+    type: 'tshirt',
+    model: 'tshirt',
+    head: 'FIND T-SHIRTS THAT DEFINE YOUR STYLE',
+    para: 'Explore our collection of premium T-shirts designed for comfort and self-expression — perfect fits, soft fabrics, and bold designs for every vibe.',
+    scale: [1, 1, 1],
+    position: [0, -1, 0],
+  },
+];
 
   const [currentIndex, setCurrentIndex] = useState(0);
 

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { asyncLogin, asyncRegister, googleLogin } from '../../store/AuthSlice';
 import { AppDispatch } from '../../store/store';
-import { Google, Send } from '@mui/icons-material';
+import { Google } from '@mui/icons-material';
 
 import {
     Alert,

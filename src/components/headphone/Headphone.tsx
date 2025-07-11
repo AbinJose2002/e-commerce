@@ -8,7 +8,7 @@ import { Box } from '@mui/material';
 type Props = {
   model: string;
   scale?: [number, number, number];
-  position?: [number, number, number] | [number];
+  position?: [number, number, number] ;
 };
 
 const HeadphoneModel = ({ model, scale, position }: Props) => {
