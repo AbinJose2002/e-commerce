@@ -24,7 +24,6 @@ import {
   Person,
   Favorite,
 } from '@mui/icons-material';
-import { LoadingButton } from '@mui/lab';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';
 import { useRouter } from 'next/navigation';
@@ -151,6 +150,7 @@ const Navbar = () => {
             <>
               {!isLogged ? (
                 <Button
+                  data-testid='login-btn'
                   sx={{ backgroundColor: 'black' }}
                   variant="contained"
                   endIcon={<Person />}
@@ -200,14 +200,15 @@ const Navbar = () => {
               /> */}
 
               {!isLogged ? (
-                <LoadingButton
+                <Button
+                  data-testid='login-btn'
                   sx={{ bgcolor: 'black' }}
                   variant="contained"
                   endIcon={<Person />}
                   onClick={handleLogIn}
                 >
                   Login
-                </LoadingButton>
+                </Button>
               ) : (
                 <>
                   <Badge badgeContent={wish.length} onClick={() => router.push('/wishlist')}>

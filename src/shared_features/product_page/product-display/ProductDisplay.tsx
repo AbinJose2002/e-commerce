@@ -1,6 +1,6 @@
 'use client'
 
-import { Box, Button, Rating, Stack, Typography } from '@mui/material'
+import { Alert, Box, Button, Rating, Snackbar, Stack, Typography } from '@mui/material'
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { ProductDisplayType } from '../../../app/item/page'
@@ -15,6 +15,7 @@ type Props = {
 }
 
 const ProductDisplay = ({ prodDis }: Props) => {
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | undefined>()
 
   const dispatch = useDispatch<AppDispatch>();
@@ -32,7 +33,16 @@ const handleAddToCart = () => {
       discountPercentage: prodDis.discountPercentage
     })
   );
+  setSnackbarOpen(true); // Show snackbar
 }
+
+const handleCloseSnackbar = (
+  event?: React.SyntheticEvent | Event,
+  reason?: string
+) => {
+  if (reason === 'clickaway') return;
+  setSnackbarOpen(false);
+};
 
 const router = useRouter()
 
@@ -142,6 +152,18 @@ const handleBuyNow = (id: number) => {
             </Stack>          
         </Box>
       </Stack>
+      <Snackbar
+        data-testid="alert"
+        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={handleCloseSnackbar}
+      >
+        <Alert role="alert" onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
+          Item added to cart successfully
+        </Alert>
+      </Snackbar>
+
     </Box>
   )
 }
