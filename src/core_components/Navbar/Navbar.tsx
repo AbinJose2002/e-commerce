@@ -164,7 +164,7 @@ const Navbar = () => {
                     <Favorite />
                   </Badge>
                   <Badge badgeContent={cart.length} onClick={() => router.push('/cart')}>
-                    <ShoppingCart />
+                    <ShoppingCart data-testid='ShoppingCartIcon'/>
                   </Badge>
                   <IconButton onClick={handleAvatarClick}>
                     {user?.photo ? <Avatar src={user.photo} /> : <AccountCircle />}
@@ -215,7 +215,7 @@ const Navbar = () => {
                     <Favorite />
                   </Badge>
                   <Badge badgeContent={cart.length} color={'primary'} onClick={() => router.push('/cart')}>
-                    <ShoppingCart />
+                    <ShoppingCart data-testid='ShoppingCartIcon'/>
                   </Badge>
                   <IconButton onClick={handleAvatarClick}>
                     {user?.photo ? <Avatar src={user.photo} /> : <AccountCircle />}

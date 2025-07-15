@@ -1,6 +1,6 @@
 beforeEach(() => {
-  cy.visit('http://localhost:3000/')
-  cy.get('[data-testid="login-btn"]').click();
+  cy.visit('https://e-commerce-umber-theta.vercel.app/')
+  cy.get('button').contains(/Login/i).click();
     cy.url().should('include', '/login')
     cy.get('input[name="email"]').type('test@gmail.com')
     cy.get('input[name="password"]').type('test@123')
