@@ -24,8 +24,8 @@ import {
   Person,
   Favorite,
 } from '@mui/icons-material';
-import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';
+import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import { asyncSignOut } from '@/store/AuthSlice';
 import SearchAutocomplete from '@/shared_components/SearchAutoComplete';
