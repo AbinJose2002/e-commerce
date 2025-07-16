@@ -73,7 +73,7 @@ const formData = useFormik<checkoutFormType>({
   const totalAmount = calculateTotalAmount();
 
   try {
-    const res = await axios.post('http://localhost:8080/payment-intent', {
+    const res = await axios.post('https://ecommerce-backend-lxli.onrender.com/payment-intent', {
       formData: values,
       itemId,
       itemCount,
@@ -81,7 +81,7 @@ const formData = useFormik<checkoutFormType>({
     });
     console.log(res.data)
     const session = res.data;
-
+    
     const result = await stripe.redirectToCheckout({
       sessionId: session.id,
     });
