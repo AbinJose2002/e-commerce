@@ -82,7 +82,7 @@ const formData = useFormik<checkoutFormType>({
     console.log(res.data)
     const session = res.data;
     
-    if (process.env.NODE_ENV === 'test') {
+    if (window.Cypress === 'test') {
   window.location.href = '/success'
 } else {
   const result = await stripe.redirectToCheckout({ sessionId: session.id })
