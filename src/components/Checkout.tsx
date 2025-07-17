@@ -73,6 +73,8 @@ const formData = useFormik<checkoutFormType>({
   const totalAmount = calculateTotalAmount();
 
   try {
+    //remove after testing
+    console.log(values, itemCount, itemId, totalAmount)
     const res = await axios.post('https://ecommerce-backend-lxli.onrender.com/payment-intent', {
       formData: values,
       itemId,
@@ -81,8 +83,9 @@ const formData = useFormik<checkoutFormType>({
     });
     console.log(res.data)
     const session = res.data;
-    
-    if (window.Cypress === 'test') {
+    //remove after testing
+    console.log(res.data)
+    if (window.Cypress) {
   window.location.href = '/success'
 } else {
   const result = await stripe.redirectToCheckout({ sessionId: session.id })
